@@ -17,8 +17,6 @@ if(WIN32 OR MSVC)
 endif()
 
 add_executable(${exe_name} main.cpp
-        test_level.cpp
-        test_level.h
         header.h
         source.cpp
 )
