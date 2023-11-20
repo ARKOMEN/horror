@@ -1,10 +1,11 @@
 #include <ncurses.h>
 #include "iostream"
 #include "vector"
+#include <algorithm>
 #include "SFML/Audio.hpp"
 #include <cstdlib>
 #include <ctime>
-#include <algorithm>
+
 
 const int wall = 0, pass = 1, room = 4, mine = 10;
 
