@@ -39,6 +39,7 @@ int main() {
     int w = w1/2;
 
     bool choice = true;
+    bool developer_mode = false;
 
     sound.play();
     sound.setLoop(true);
@@ -64,14 +65,14 @@ int main() {
             case 10: // клавиша ENTER
                 if(highlight == 1) {
                     sound.stop();
-                    game(highlight);
+                    game(highlight, developer_mode);
                     sound.play();
                 }
                 else if(highlight == 2){
                     //продолжить с контрольной точки
                 }
                 else if(highlight == 3){//настройки
-                    display_settings(h, w, &sound);
+                    display_settings(h, w, &sound, &developer_mode);
 
                 }
                 else if(highlight == 4){

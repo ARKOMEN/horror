@@ -1,68 +1,62 @@
 #include <ncurses.h>
 #include "iostream"
-#include "vector"
+#include <vector>
 #include <algorithm>
+#include <functional>
 #include "SFML/Audio.hpp"
 #include <cstdlib>
 #include <ctime>
 
-
-const int wall = 0, pass = 1, room = 4, mine = 10;
-
-class map_class {
-    int _h, _w;
+class MazeGenerator{
+    void generateMazeRecursive(int x, int y);
+    int rows;
+    int cols;
 public:
-    int** maze;
-    int get_h();
-    int get_w();
-    map_class(int h1, int w1);
-    bool dead_end(int x, int y); // Вспомогательная функция, определяет тупики
-    void maze_make(int k, int rheight, int rwidth); // Собственно алгоритм
-};
-
-void game(int ch);
-
-class game_status{
-    int _level;
-    bool _game_over;
-    int _c;
-public:
-    int x_ch, y_ch;
-    bool signal;
-    game_status(int level, bool game_over);
-    int get_level();
-    bool get_game_over();
-    int get_c();
-    void write_c(int c);
-    void write_level(int level);
+    char** maze;
+    MazeGenerator(int r, int c);
+    void generateMaze();
+    ~MazeGenerator();
 };
 
 class game_object{
 public:
     int x, y;
-    int type;
-    virtual void move(game_status* status, map_class m) = 0;
+    int ch_x = INT16_MAX, ch_y = INT16_MAX;
+    MazeGenerator* _map;
+    char* graphics;
+    virtual void move(int c) = 0;
 };
 
-class main_ch : public game_object{
+class draw {
+    int _h, _w;
+    bool _developer_mode;
+    MazeGenerator* _map;
 public:
-    void move(game_status* status, map_class m) override;
+    int x, y;
+    draw(int h, int w, MazeGenerator* map, bool developer_mode);
+    void display(game_object*& object);
+    void display_map();
+    int display_pause(int h1, int w1);
+};
+
+class character : public game_object{
+public:
+    character(int nx, int ny, MazeGenerator* map);
+    void move(int c) override;
 };
 
 class ghosts : public game_object{
 public:
-    void move(game_status* status, map_class m) override;
+    ghosts(int nx, int ny, MazeGenerator* nmap);
+    void move(int c) override;
 };
 
-class bullet : public game_object{
+class artifacts : public game_object{
 public:
-    void move(game_status* status, map_class m) override;
+    artifacts(int nx, int ny, MazeGenerator* nmap);
+    void move(int c) override;
 };
 
-void display_settings(int h1, int w1, sf::Sound* sound);
+bool display_settings(int h1, int w1, sf::Sound* sound, bool* developer_mode);
 
-class draw {
-public:
-    void display(game_object*& object, map_class m, game_status* status);
-    int display_pause(int h1, int w1, game_status* status);
-};
+void game(int ch, bool developer_mode);

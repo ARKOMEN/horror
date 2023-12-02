@@ -1,0 +1,3 @@
+/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles/horror.dir
+/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles/edit_cache.dir
+/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles/rebuild_cache.dir

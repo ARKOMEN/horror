@@ -1,214 +1,97 @@
 #include "header.h"
 
-map_class::map_class(int h1, int w1) :_h(h1), _w(w1){
-    srand((unsigned)time(NULL));
+character::character(int nx, int ny, MazeGenerator* nmap){
+    x = nx;
+    y = ny;
+    _map = nmap;
+    graphics = "C";
+}
+ghosts::ghosts(int nx, int ny, MazeGenerator* nmap) {
+    x = nx;
+    y = ny;
+    _map = nmap;
+    graphics = "G";
 }
 
-int map_class::get_h() {
-    return _h;
+artifacts::artifacts(int nx, int ny, MazeGenerator* nmap) {
+    x = nx;
+    y = ny;
+    _map = nmap;
+    graphics = "'";
 }
 
-int map_class::get_w() {
-    return _w;
-}
+draw::draw(int h, int w, MazeGenerator* map, bool developer_mode) :_h(h), _w(w), _map(map), _developer_mode(developer_mode){}
 
-bool map_class::dead_end(int x, int y) {
-    int a = 0;
+const int rows = 46;
+const int cols = 189;
+enum Cell { WALL = '#', PATH = ' ' };
 
-    if(x != 1){
-        if(maze[y][x-2] == pass || maze[y][x-2] == room)
-            a+=1;
-    }
-    else a+=1;
-
-    if (y != 1) {
-        if (maze[y - 2][x] == pass || maze[y - 2][x] == room)
-            a += 1;
-    }
-    else a += 1;
-
-    if (x != _w - 2) {
-        if (maze[y][x + 2] == pass || maze[y][x + 2] == room)
-            a += 1;
-    }
-    else a += 1;
-
-    if (y != _h - 2) {
-        if (maze[y + 2][x] == pass || maze[y + 2][x] == room)
-            a += 1;
-    }
-    else a += 1;
-
-    if (a == 4)
-        return 1;
-    else
-        return 0;
-}
-
-void map_class::maze_make(int k, int rheight, int rwidth) {
-    int x, y, c, a;
-    bool b, swap = 1;
-
-    maze = new int *[_h];
-    for (int i = 0; i < _h; i++)
-        maze[i] = new int[_w];
-
-    for (int i = 0; i < _h; i++) // Массив заполняется землей-ноликами
-        for (int j = 0; j < _w; j++)
-            maze[i][j] = wall;
-
-    rheight--;
-    rwidth--; // Исключительно для удобства
-
-    for (int l = 0; l < k; l++) {  // Генерация комнат
-        b = 1;
-        while (b) {
-            do { // Точка-центр комнаты
-                if (rwidth % 4 == 0) // Комнаты, с разной делимостью на 4 ведут себя
-                    x = 2 * (rand() % (_w / 2)) + 1; // по разному, унифицируем
-                else
-                    x = 2 * (rand() % (_w / 2)) + 2;
-                if (rheight % 4 == 0)
-                    y = 2 * (rand() % (_h / 2)) + 1;
-                else
-                    y = 2 * (rand() % (_h / 2)) + 2;
-            } while (x < (rwidth + 2) || x > (_w - rwidth - 2) ||
-                     y < (rheight + 2) || y > (_h - rheight - 2));
-
-            b = 0; // Комнаты не должны прикасаться
-            for (int i = (y - rheight - 2); i < (y + rheight + 2); i++)
-                for (int j = (x - rwidth - 2); j < (x + rwidth + 2); j++)
-                    if (maze[i][j] == room)
-                        b = 1;
-
-            if (b)
-                continue;
-
-            for (int i = (y - rheight / 2); i < (y + rheight / 2 + 1); i++) // Раскопки комнаты
-                for (int j = (x - rwidth / 2); j < (x + rwidth / 2 + 1); j++)
-                    maze[i][j] = room;
-
-            for(int d = 0; d < 3; ++d) {
-
-                c = rand() % 4; // Дверь в комнату, определяем в какую стену
-                // Нижняя, верхняя, правая и левая соответственно
-                // Нагромождение в виде rand()... нужно для того, чтобы дверь стояла в разных
-                // местах стены
-                if (c == 0) maze[y + rheight / 2 + 1][x - rwidth / 2 + 2 * (rand() % (rwidth / 2 + 1))] = room;
-                if (c == 1) maze[y - rheight / 2 - 1][x - rwidth / 2 + 2 * (rand() % (rwidth / 2 + 1))] = room;
-                if (c == 2) maze[y - rheight / 2 + 2 * (rand() % (rheight / 2 + 1))][x + rwidth / 2 + 1] = room;
-                if (c == 3) maze[y - rheight / 2 + 2 * (rand() % (rheight / 2 + 1))][x - rwidth / 2 - 1] = room;
-                // swap отвечает за возможность поворачивать комнату на 90°
-                if (swap) {
-                    rheight += rwidth;
-                    rwidth = rheight - rwidth;
-                    rheight -= rwidth;
-                } // Вот так настоящие мужики меняют переменные значениями
-            }
+MazeGenerator::MazeGenerator(int r, int c) : rows(r), cols(c) {
+    maze = new char* [rows];
+    for (int i = 0; i < rows; ++i) {
+        maze[i] = new char[cols];
+        for (int j = 0; j < cols; ++j) {
+            maze[i][j] = WALL;
         }
     }
+    srand(time(nullptr));
+}
 
-    x = 3; y = 3; a = 0; // Точка приземления крота и счетчик
-    while (a < 10000) { // Да, простите, костыль, иначе есть как, но лень
-        maze[y][x] = pass;
-        a++;
-        while (1) { // Бесконечный цикл, который прерывается только тупиком
-            c = rand() % 4; // Напоминаю, что крот прорывает
-            switch (c) {  // по две клетки в одном направлении за прыжок
-                case 0:
-                    if (y != 1)
-                        if (maze[y - 2][x] == wall) { // Вверх
-                            maze[y - 1][x] = pass;
-                            maze[y - 2][x] = pass;
-                            y -= 2;
-                        }
-                case 1:
-                    if (y != _h - 2)
-                        if (maze[y + 2][x] == wall) { // Вниз
-                            maze[y + 1][x] = pass;
-                            maze[y + 2][x] = pass;
-                            y += 2;
-                        }
-                case 2:
-                    if (x != 1)
-                        if (maze[y][x - 2] == wall) { // Налево
-                            maze[y][x - 1] = pass;
-                            maze[y][x - 2] = pass;
-                            x -= 2;
-                        }
-                case 3:
-                    if (x != _w - 2)
-                        if (maze[y][x + 2] == wall) { // Направо
-                            maze[y][x + 1] = pass;
-                            maze[y][x + 2] = pass;
-                            x += 2;
-                        }
-            }
-            if (dead_end(x, y))
-                break;
+void MazeGenerator::generateMaze() {
+    generateMazeRecursive(1, 1);
+}
+
+MazeGenerator::~MazeGenerator() {
+    for (int i = 0; i < rows; ++i) {
+        delete[] maze[i];
+    }
+    delete[] maze;
+}
+
+void MazeGenerator::generateMazeRecursive(int x, int y) {
+    static const int dirs[4][2] = { {0, 2}, {2, 0}, {0, -2}, {-2, 0} };
+
+    int dir[4] = { 0, 1, 2, 3 };
+    for (int i = 0; i < 4; ++i) {
+        int randIndex = rand() % (4 - i) + i;
+        std::swap(dir[i], dir[randIndex]);
+    }
+
+    for (int i = 0; i < 4; ++i) {
+        int nx = x + dirs[dir[i]][0];
+        int ny = y + dirs[dir[i]][1];
+
+        if (nx > 0 && ny > 0 && nx < rows - 1 && ny < cols - 1 && maze[nx][ny] == WALL) {
+            maze[nx][ny] = PATH;
+            maze[x + dirs[dir[i]][0] / 2][y + dirs[dir[i]][1] / 2] = PATH;
+            generateMazeRecursive(nx, ny);
         }
-        if (dead_end(x, y)) // Вытаскиваем крота из тупика
-            do {
-                x = 2 * (rand() % ((_w - 1) / 2)) + 1;
-                y = 2 * (rand() % ((_h - 1) / 2)) + 1;
-            } while (maze[y][x] != pass && maze[y][x] != room);
-    } // На этом и все.
-    int i = 0;
-    while (i < mine) {
-        x = rand() % _w + 1;
-        y = rand() % _h + 1;
-        if (maze[y][x] == wall)
-            continue;
-        maze[y][x] = mine;
-        i++;
     }
 }
-game_status::game_status(int level, bool game_over)
-: _level(level), _game_over(game_over){}
 
-int game_status::get_level() {
-    return _level;
-}
-
-bool game_status::get_game_over() {
-    return _game_over;
-}
-
-int game_status::get_c() {
-    return _c;
-}
-
-void game_status::write_c(int c){
-    _c  = c;
-}
-
-void game_status::write_level(int level){
-    _level = level;
-}
-
-void display_settings(int h, int w, sf::Sound* sound) {
+bool display_settings(int h, int w, sf::Sound* sound, bool* developer_mode) {
     int highlight = 1;
     int c;
     int volume = sound->getVolume();
     const char *options[] = {
             "Volume",
+            "developer mode",
             "Back"
     };
     bool choice = true;
-
     while ('q' != (c = getch()) && choice) {
         clear();
 
         switch (c) {
             case KEY_UP:
                 if (highlight == 1) {
-                    highlight = 2;
+                    highlight = 3;
                 } else {
                     highlight--;
                 }
                 break;
             case KEY_DOWN:
-                if (highlight == 2) {
+                if (highlight == 3) {
                     highlight = 1;
                 } else {
                     highlight++;
@@ -225,13 +108,16 @@ void display_settings(int h, int w, sf::Sound* sound) {
                 }
                 break;
             case 10: // клавиша ENTER
-                if (highlight == 2) {
+                if(highlight == 2){
+                    *developer_mode = !(*developer_mode);
+                }
+                if (highlight == 3) {
                     choice = false;
                 }
         }
         volume = std::clamp(volume, 0, 100);
         sound->setVolume(static_cast<float>(volume));
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             if (highlight == i + 1) {
                 attron(A_REVERSE);
             }
@@ -247,10 +133,19 @@ void display_settings(int h, int w, sf::Sound* sound) {
             }
             wprintw(stdscr, "%s", "-");
         }
+        if(*developer_mode == false){
+            wmove(stdscr, h + 1, w + 15);
+            wprintw(stdscr, "%s", "no");
+        }
+        else{
+            wmove(stdscr, h + 1, w + 15);
+            wprintw(stdscr, "%s", "yes");
+        }
     }
+    return developer_mode;
 }
 
-int draw::display_pause(int h1, int w1, game_status* status) {
+int draw::display_pause(int h1, int w1) {
     const char *options[] = {
             "Continue",
             "Save and exit menu",
@@ -259,7 +154,7 @@ int draw::display_pause(int h1, int w1, game_status* status) {
     bool choise = true;
     int h = h1/2;
     int w = w1/2;
-
+/*
     do{
         status->write_c(getch());
         switch (status->get_c()) {
@@ -289,179 +184,144 @@ int draw::display_pause(int h1, int w1, game_status* status) {
             printw("%s", options[i]);
             attroff(A_REVERSE);
         }
-    }while (status->get_c() != 'q' && choise);
+    }while (status->get_c() != 'q' && choise);*/
     return highlight;
 }
 
-void draw::display(game_object *&object, map_class m, game_status* status) {
-    if(object->type == 1) {
-        for (int i = 0; i < m.get_w(); i++) {
-            if (i > m.get_w() - 1 || i < 0)
-                continue;
-            for (int j = 0; j < m.get_h(); j++) {
-                if (j < 0 || j > m.get_h() - 1)
-                    continue;
-                switch (m.maze[j][i]) {
-                    case wall:
-                        mvaddch(j, i, '#');
-                        break;
-                    case pass:
-                        mvaddch(j, i, ' ');
-                        break;
-                    case room:
-                        mvaddch(j, i, ' ');
-                        break;
-                    case mine:
-                        mvaddch(j, i, '\'');
-                        break;
-                }
+void draw::display_map() {
+    if(!_developer_mode) {
+        int r = 3;
+        for (int i = -r; i < r; ++i) {
+            for (int j = -r; j < r; ++j) {
+                if (x + i < 0 || x + i > _w || y + i < 0 || y + i > _h) continue;
+                mvaddch(y + j, x + i, _map->maze[y + j][x + i]);
             }
         }
-        wmove(stdscr, object->y, object->x);
-        printw("C");
-    }
-    else if(object->type == 2){
-        if(object->x >= status->x_ch - 6 && object->x <=status->x_ch + 6 && object->y >= status->y_ch - 3 && object->y <= status->y_ch + 3){
-            wmove(stdscr, object->y, object->x);
-            printw("G");
-            std::cout << "haha" << std::endl;
-        }
-    }
-}
-
-void ghosts::move(game_status* status, map_class m){
-    int dx, dy;
-    bool f = true;
-    if(status->signal){
-
     }
     else{
-        while(f){
-            dx = rand()%2 - 1;
-            dy = rand()%2 - 1;
-            switch (m.maze[x+dx][y+dy]) {
-                case room: f = false;
-                    break;
-                case pass: f = false;
-                    break;
-                case mine: f = false;
-                    break;
+        for (int i = 0; i < _w; ++i) {
+            for (int j = 0; j < _h; ++j) {
+                mvaddch(j, i, _map->maze[j][i]);
             }
         }
-        x += dx;
-        y += dy;
     }
 }
 
-void main_ch::move(game_status* status, map_class m) {
-    status->signal = false;
-    switch (status->get_c()) {
+void draw::display(game_object *&object) {
+    if(!_developer_mode) {
+        int r = 3;
+        if (object->x > x - r && object->x < x + r && object->y > y - r && object->y < y + r) {
+            wmove(stdscr, object->y, object->x);
+            wprintw(stdscr, "%s", object->graphics);
+        }
+    }
+    else{
+        wmove(stdscr, object->y, object->x);
+        wprintw(stdscr, "%s", object->graphics);
+    }
+}
+
+void ghosts::move(int c){
+    timeout(300);
+    if(abs(x - ch_x) + abs(y - ch_y) > 4) {
+        int direction = rand() % 4;
+        switch (direction) {
+            case 0:
+                if (_map->maze[y - 1][x] == ' ') y --;
+                break;
+            case 1:
+                if (_map->maze[y + 1][x] == ' ') y ++;
+                break;
+            case 2:
+                if (_map->maze[y][x + 1] == ' ') x ++;
+                break;
+            case 3:
+                if (_map->maze[y][x - 1] == ' ') x --;
+        }
+    }
+    else{
+        if(x < ch_x){
+            x++;
+        }
+        else if(x > ch_x){
+            x--;
+        }
+        else if(y < ch_y){
+            y++;
+        }
+        else if(y > ch_y){
+            y--;
+        }
+    }
+}
+
+void character::move(int c) {
+    switch (c) {
         case KEY_UP:
-            switch (m.maze[y - 1][x]) {
-                case pass:
-                    y--;
-                    break;
-                case room:
-                    y--;
-                    break;
-                case mine:
-                    y--;
-                    status->signal = true;
-                    break;
-            }
+            if(_map->maze[y - 1][x] == ' ') y --;
             break;
         case KEY_DOWN:
-            switch (m.maze[y + 1][x]) {
-                case pass:
-                    y++;
-                break;
-                case room:
-                    y++;
-                    break;
-                case mine:
-                    y++;
-                    status->signal = true;
-                    break;
-            }
-            break;
-        case KEY_LEFT:
-            switch (m.maze[y][x - 1]) {
-                case pass:
-                    x--;
-                break;
-                case room:
-                    x--;
-                    break;
-                case mine:
-                    x--;
-                    status->signal = true;
-                    break;
-            }
+            if(_map->maze[y + 1][x] == ' ') y ++;
             break;
         case KEY_RIGHT:
-            switch (m.maze[y][x + 1]) {
-                case pass:
-                    x++;
-                break;
-                case room:
-                    x++;
-                    break;
-                case mine:
-                    x++;
-                    status->signal = true;
-                    break;
-            }
+            if(_map->maze[y][x + 1] == ' ') x ++;
             break;
+        case KEY_LEFT:
+            if(_map->maze[y][x - 1] == ' ') x --;
     }
-    status->x_ch = x;
-    status->y_ch = y;
+    if(graphics == "C")graphics = "c";
+    else graphics = "C";
 }
 
-void game(int ch) {
-    if(ch == 1){
-        game_status status(1, false);
-        status.signal = false;
+void artifacts::move(int c) {
+    if(graphics == "'")graphics = "\"";
+    else graphics = "'";
+}
 
+void game(int ch, bool developer_mode) {
+    if(ch == 1){
         int h1, w1;
         getmaxyx(stdscr, h1, w1);
         int h = h1/2;
         int w = w1/2;
 
-        draw picture;
+        MazeGenerator map(h1, w1);
+        map.generateMaze();
 
-        main_ch character;
-        character.type = 1;
-        character.y = 3;
-        character.x = 3;
-        status.x_ch = character.x;
-        status.y_ch = character.y;
+        draw picture(h1, w1, &map, developer_mode);
+
+
         std::vector<game_object*> objects;
-        objects.push_back(static_cast<game_object*>(&character));
-
-        int k = 40; // Мы включили параметр количества комнат
-        int rheight = 5, rwidth = 7; // Размеры комнаты
-        map_class map(h1, w1 - 1);
-        map.maze_make(k, rheight, rwidth);
-
-        ghosts blind_g;
-        blind_g.x = h;
-        blind_g.y = w;
-        blind_g.type = 2;
-        objects.push_back(static_cast<game_object*>(&blind_g));
-        do {
-            status.write_c(getch());
-            if(status.get_c() == 27){
-                if(picture.display_pause(h1, w1, &status) == 2){
-                    //сохраняем игру
+        character pac_man(w1/2, h1/2, &map);
+        objects.push_back(static_cast<game_object*>(&pac_man));
+        for(int i = 0; i < 10; ++i){
+            int nx, ny;
+            while(true){
+                nx = rand()%(w1 - 2) +2;
+                ny = rand()%(h1 - 2) +2;
+                if(map.maze[ny][nx] == ' '){
+                    break;
                 }
             }
+            objects.push_back(static_cast<game_object*>(new ghosts(nx, ny, &map)));
+        }
+        int c;
+        artifacts artifacts(1, 1, &map);
+        objects.push_back(static_cast<game_object*>(&artifacts));
+        do {
+            picture.x = pac_man.x;
+            picture.y = pac_man.y;
             clear();
             for(auto& go: objects){
-                go->move(&status, map);
+                go->ch_x = picture.x;
+                go->ch_y = picture.y;
+                go->move(c);
             }
+            picture.display_map();
             for(auto& go: objects){
-                picture.display(go, map, &status);
+                picture.display(go);
             }
-        } while (status.get_c() != 'q');
+            timeout(300);
+        } while ('q' != (c = getch()));
     }
 }
