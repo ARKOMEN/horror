@@ -219,4 +219,14 @@ CMakeFiles/horror.dir/main.cpp.o: \
  /usr/include/SFML/Audio/SoundFileFactory.hpp \
  /usr/include/SFML/Audio/SoundFileFactory.inl \
  /usr/include/SFML/Audio/SoundFileReader.hpp \
- /usr/include/SFML/Audio/SoundFileWriter.hpp
+ /usr/include/SFML/Audio/SoundFileWriter.hpp /usr/include/c++/13/thread \
+ /usr/include/c++/13/bits/std_thread.h \
+ /usr/include/c++/13/bits/unique_ptr.h \
+ /usr/include/c++/13/bits/this_thread_sleep.h \
+ /usr/include/c++/13/bits/chrono.h /usr/include/c++/13/ratio \
+ /usr/include/c++/13/cstdint /usr/include/c++/13/limits \
+ /usr/include/c++/13/bits/parse_numbers.h /usr/include/c++/13/fstream \
+ /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
+ /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h \
+ /usr/include/c++/13/bits/fstream.tcc /usr/include/c++/13/sstream \
+ /usr/include/c++/13/bits/sstream.tcc /usr/include/c++/13/chrono

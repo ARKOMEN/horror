@@ -30,6 +30,7 @@ int main() {
             "New game",
             "Continue from the checkpoint",
             "Settings",
+            "Table of records",
             "Exit"
     };
 
@@ -50,13 +51,13 @@ int main() {
         switch (c) {
             case KEY_UP:
                 if (highlight == 1) {
-                    highlight = 4;
+                    highlight = 5;
                 } else {
                     highlight--;
                 }
                 break;
             case KEY_DOWN:
-                if (highlight == 4) {
+                if (highlight == 5) {
                     highlight = 1;
                 } else {
                     highlight++;
@@ -69,18 +70,23 @@ int main() {
                     sound.play();
                 }
                 else if(highlight == 2){
-                    //продолжить с контрольной точки
+                    sound.stop();
+                    game(highlight, developer_mode);
+                    sound.play();
                 }
                 else if(highlight == 3){//настройки
                     display_settings(h, w, &sound, &developer_mode);
 
                 }
                 else if(highlight == 4){
+                    table_records(h, w);
+                }
+                else if(highlight == 5){
                     choice = false;
                 }
                 break;
         }
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             if (highlight == i + 1) {
                 attron(A_REVERSE);
             }

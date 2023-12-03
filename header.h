@@ -6,6 +6,14 @@
 #include "SFML/Audio.hpp"
 #include <cstdlib>
 #include <ctime>
+#include <set>
+#include <thread>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <chrono>
+
+void table_records(int h , int w);
 
 class MazeGenerator{
     void generateMazeRecursive(int x, int y);
@@ -21,7 +29,6 @@ public:
 class game_object{
 public:
     int x, y;
-    int ch_x = INT16_MAX, ch_y = INT16_MAX;
     MazeGenerator* _map;
     char* graphics;
     virtual void move(int c) = 0;
@@ -47,6 +54,7 @@ public:
 
 class ghosts : public game_object{
 public:
+    int direction;
     ghosts(int nx, int ny, MazeGenerator* nmap);
     void move(int c) override;
 };

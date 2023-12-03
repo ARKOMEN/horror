@@ -1,5 +1,86 @@
 #include "header.h"
 
+struct Player {
+    std::string name;
+    int artifactsCollected;
+    double timeTaken;
+};
+
+bool comparePlayers(const Player& player1, const Player& player2) {
+    if (player1.artifactsCollected > player2.artifactsCollected) {
+        return true;
+    } else if (player1.artifactsCollected == player2.artifactsCollected) {
+        return player1.timeTaken < player2.timeTaken;
+    }
+    return false;
+}
+
+void displayTable(const std::vector<Player>& players) {
+    int c;
+    while ('q' != (c = getch())) {
+        clear();
+        printw("%-20s %-20s %-20s\n", "Player Name", "Artifacts Collected", "Time Taken");
+        for (const auto &player: players) {
+            printw("%-20s %-20d %-20.2f\n", player.name.c_str(), player.artifactsCollected, player.timeTaken);
+        }
+    }
+}
+
+void display_result(int artifactsCollected, double timeTaken){
+    int c;
+    char playerName[50];
+    clear();
+    printw("Enter player name: ");
+    echo();
+    bool choice = false;
+    while (!choice) {
+        getnstr(playerName, sizeof(playerName));
+        timeout(500);
+        for(int i = 0; i < 50; ++i){
+            if(playerName[i] == ' '){
+                choice = true;
+            }
+        }
+    }
+    noecho();
+    std::ofstream outputFile("table_of_records.txt", std::ios::app);
+    outputFile << playerName << artifactsCollected << " " << timeTaken << std::endl;
+    outputFile.close();
+}
+
+void table_records(int h, int w){
+    std::string filename = "table_of_records.txt";
+    std::ifstream inputFile(filename);
+
+    std::vector<Player> players;
+
+    std::string line;
+    while (std::getline(inputFile, line)) {
+        std::istringstream iss(line);
+        Player player;
+        iss >> player.name >> player.artifactsCollected >> player.timeTaken;
+        players.push_back(player);
+    }
+    inputFile.close();
+    std::sort(players.begin(), players.end(), comparePlayers);
+    displayTable(players);
+}
+
+void save_game(MazeGenerator* map ,std::vector<game_object*> objects, int number_artifacts, double time){
+    std::ofstream outputFile("save.txt");
+    for(int i = 0; i < 47; ++i){
+        for(int j = 0; j < 190; ++j) {
+            outputFile << map->maze[i][j];
+        }
+    }
+    outputFile << number_artifacts << std::endl;
+    outputFile << time << std::endl;
+    for(auto& go: objects){
+        outputFile << std::to_string(go->y) << std::endl;
+        outputFile << std::to_string(go->x) << std::endl;
+    }
+}
+
 character::character(int nx, int ny, MazeGenerator* nmap){
     x = nx;
     y = ny;
@@ -11,6 +92,7 @@ ghosts::ghosts(int nx, int ny, MazeGenerator* nmap) {
     y = ny;
     _map = nmap;
     graphics = "G";
+    direction = 4;
 }
 
 artifacts::artifacts(int nx, int ny, MazeGenerator* nmap) {
@@ -154,10 +236,9 @@ int draw::display_pause(int h1, int w1) {
     bool choise = true;
     int h = h1/2;
     int w = w1/2;
-/*
+    int c = 11;
     do{
-        status->write_c(getch());
-        switch (status->get_c()) {
+        switch (c) {
             case KEY_UP:
                 if (highlight == 1) {
                     highlight = 2;
@@ -184,7 +265,7 @@ int draw::display_pause(int h1, int w1) {
             printw("%s", options[i]);
             attroff(A_REVERSE);
         }
-    }while (status->get_c() != 'q' && choise);*/
+    }while ('q' != (c = getch()) && choise);
     return highlight;
 }
 
@@ -222,52 +303,52 @@ void draw::display(game_object *&object) {
 }
 
 void ghosts::move(int c){
-    timeout(300);
-    if(abs(x - ch_x) + abs(y - ch_y) > 4) {
-        int direction = rand() % 4;
+    if(direction != 4){
         switch (direction) {
             case 0:
                 if (_map->maze[y - 1][x] == ' ') y --;
+                else direction = 4;
                 break;
             case 1:
                 if (_map->maze[y + 1][x] == ' ') y ++;
+                else direction = 4;
                 break;
             case 2:
                 if (_map->maze[y][x + 1] == ' ') x ++;
+                else direction = 4;
                 break;
             case 3:
                 if (_map->maze[y][x - 1] == ' ') x --;
+                else direction = 4;
+                break;
+
         }
     }
     else{
-        if(x < ch_x){
-            x++;
-        }
-        else if(x > ch_x){
-            x--;
-        }
-        else if(y < ch_y){
-            y++;
-        }
-        else if(y > ch_y){
-            y--;
-        }
+        std::set<int> directions;
+        if(_map->maze[y - 1][x] == ' ') directions.insert(0);
+        if(_map->maze[y + 1][x] == ' ') directions.insert(1);
+        if(_map->maze[y][x + 1] == ' ') directions.insert(2);
+        if(_map->maze[y][x - 1] == ' ') directions.insert(3);
+        int choice = rand()%directions.size();
+        direction = *next(directions.begin(), choice);
     }
 }
 
 void character::move(int c) {
     switch (c) {
         case KEY_UP:
-            if(_map->maze[y - 1][x] == ' ') y --;
+            /*if(_map->maze[y - 1][x] == ' ')*/ y --;
             break;
         case KEY_DOWN:
-            if(_map->maze[y + 1][x] == ' ') y ++;
+            /*if(_map->maze[y + 1][x] == ' ') */y ++;
             break;
         case KEY_RIGHT:
-            if(_map->maze[y][x + 1] == ' ') x ++;
+            /*if(_map->maze[y][x + 1] == ' ') */x ++;
             break;
         case KEY_LEFT:
-            if(_map->maze[y][x - 1] == ' ') x --;
+            /*if(_map->maze[y][x - 1] == ' ')*/ x --;
+            break;
     }
     if(graphics == "C")graphics = "c";
     else graphics = "C";
@@ -294,6 +375,18 @@ void game(int ch, bool developer_mode) {
         std::vector<game_object*> objects;
         character pac_man(w1/2, h1/2, &map);
         objects.push_back(static_cast<game_object*>(&pac_man));
+        int number_artifacts = 5;
+        for(int i = 0; i < number_artifacts; ++i){
+            int nx, ny;
+            while(true){
+                nx = rand()%(w1 - 2) +2;
+                ny = rand()%(h1 - 2) +2;
+                if(map.maze[ny][nx] == ' '){
+                    break;
+                }
+            }
+            objects.push_back(static_cast<game_object*>(new artifacts(nx, ny, &map)));
+        }
         for(int i = 0; i < 10; ++i){
             int nx, ny;
             while(true){
@@ -305,23 +398,129 @@ void game(int ch, bool developer_mode) {
             }
             objects.push_back(static_cast<game_object*>(new ghosts(nx, ny, &map)));
         }
+        bool game_over = false;
         int c;
-        artifacts artifacts(1, 1, &map);
-        objects.push_back(static_cast<game_object*>(&artifacts));
-        do {
+        auto start_time = std::chrono::high_resolution_clock::now();
+        while ('q' != (c = getch()) && !game_over){
             picture.x = pac_man.x;
             picture.y = pac_man.y;
+            if(c == 27){
+                if(picture.display_pause(h1, w1) == 2){
+                    auto end_time = std::chrono::high_resolution_clock::now();
+                    auto duration = std::chrono::duration<double, std::milli>(end_time - start_time).count();
+                    save_game(&map, objects, number_artifacts, duration);
+                    game_over = true;
+                }
+            }
+            for(int i = 1; i < 1 + number_artifacts; ++i){
+                if(pac_man.x == objects[i]->x && pac_man.y == objects[i]->y){
+                    number_artifacts--;
+                    objects.erase(objects.begin() + i);
+                    if(number_artifacts == 0){
+                        auto end_time = std::chrono::high_resolution_clock::now();
+                        auto duration = std::chrono::duration<double, std::milli>(end_time - start_time).count();
+                        display_result(5 - number_artifacts, duration);
+                        game_over = true;
+                    }
+                }
+            }
+            for(int i = 1 + number_artifacts; i < 1 + number_artifacts + 10; ++i){
+                if(pac_man.x == objects[i]->x && pac_man.y == objects[i]->y){
+                    auto end_time = std::chrono::high_resolution_clock::now();
+                    auto duration = std::chrono::duration<double, std::milli>(end_time - start_time).count();
+                    display_result(5 - number_artifacts, duration/60);
+                    game_over = true;
+                }
+            }
             clear();
             for(auto& go: objects){
-                go->ch_x = picture.x;
-                go->ch_y = picture.y;
                 go->move(c);
             }
             picture.display_map();
             for(auto& go: objects){
                 picture.display(go);
             }
-            timeout(300);
-        } while ('q' != (c = getch()));
+            timeout(250);
+        }
+    }
+    else{
+        int h1, w1;
+        getmaxyx(stdscr, h1, w1);
+        int h = h1/2;
+        int w = w1/2;
+        int c;
+        std::string tmp_s1, tmp_s2;
+        std::vector<game_object*> objects;
+        std::string filename = "save.txt";
+        std::ifstream inputFile(filename);
+        MazeGenerator map(h1, w1);
+        std::string line;
+        for(int i = 0; i < 47; ++i) {
+            for (int j = 0; j < 190; ++j) {
+                inputFile.get(map.maze[i][j]);
+            }
+        }
+        draw picture(h1, w1, &map, developer_mode);
+        std::getline(inputFile, tmp_s1);
+        int number_artifacts = std::stoi(tmp_s1);
+        std::getline(inputFile, tmp_s1);
+        int time = std::stoi(tmp_s1);
+        std::getline(inputFile, tmp_s1);
+        std::getline(inputFile, tmp_s2);
+        character pac_man(std::stoi(tmp_s2), std::stoi(tmp_s1), &map);
+        objects.push_back(static_cast<game_object*>(&pac_man));
+        for(int i = 0; i < number_artifacts; ++i){
+            std::getline(inputFile, tmp_s1);
+            std::getline(inputFile, tmp_s2);
+            objects.push_back(static_cast<game_object*>(new artifacts(std::stoi(tmp_s2), std::stoi(tmp_s1), &map)));
+        }
+        for(int i = 0; i < 10; ++i){
+            std::getline(inputFile, tmp_s1);
+            std::getline(inputFile, tmp_s2);
+            objects.push_back(static_cast<game_object*>(new ghosts(std::stoi(tmp_s2), std::stoi(tmp_s1), &map)));
+        }
+        inputFile.close();
+        bool game_over = false;
+        auto start_time = std::chrono::high_resolution_clock::now();
+        while ('q' != (c = getch())){
+            picture.x = pac_man.x;
+            picture.y = pac_man.y;
+            if(c == 27){
+                if(picture.display_pause(h1, w1) == 2){
+                    auto end_time = std::chrono::high_resolution_clock::now();
+                    auto duration = std::chrono::duration<double, std::milli>(end_time - start_time).count();
+                    save_game(&map, objects, number_artifacts, duration/60 + time);
+                }
+            }
+            for(int i = 1; i < 1 + number_artifacts; ++i){
+                if(pac_man.x == objects[i]->x && pac_man.y == objects[i]->y){
+                    number_artifacts--;
+                    objects.erase(objects.begin() + i);
+                    if(number_artifacts == 0){
+                        auto end_time = std::chrono::high_resolution_clock::now();
+                        auto duration = std::chrono::duration<double, std::milli>(end_time - start_time).count();
+                        display_result(5 - number_artifacts, duration/60 + time);
+                        game_over = true;
+                    }
+                }
+            }
+            for(int i = 1 + number_artifacts; i < 1 + number_artifacts + 10; ++i){
+                if(pac_man.x == objects[i]->x && pac_man.y == objects[i]->y){
+                    auto end_time = std::chrono::high_resolution_clock::now();
+                    auto duration = std::chrono::duration<double, std::milli>(end_time - start_time).count();
+                    display_result(5 - number_artifacts, duration/60 + time);
+                    game_over = true;
+                }
+            }
+            clear();
+            for(auto& go: objects){
+                go->move(c);
+            }
+            picture.display_map();
+            for(auto& go: objects){
+                picture.display(go);
+            }
+            timeout(250);
+        }
     }
 }
