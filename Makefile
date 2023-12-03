@@ -129,6 +129,30 @@ horror/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/build
 .PHONY : horror/fast
 
+display.o: display.cpp.o
+.PHONY : display.o
+
+# target to build an object file
+display.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/display.cpp.o
+.PHONY : display.cpp.o
+
+display.i: display.cpp.i
+.PHONY : display.i
+
+# target to preprocess a source file
+display.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/display.cpp.i
+.PHONY : display.cpp.i
+
+display.s: display.cpp.s
+.PHONY : display.s
+
+# target to generate assembly for a file
+display.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/display.cpp.s
+.PHONY : display.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -152,6 +176,78 @@ main.s: main.cpp.s
 main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/main.cpp.s
 .PHONY : main.cpp.s
+
+maze.o: maze.cpp.o
+.PHONY : maze.o
+
+# target to build an object file
+maze.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/maze.cpp.o
+.PHONY : maze.cpp.o
+
+maze.i: maze.cpp.i
+.PHONY : maze.i
+
+# target to preprocess a source file
+maze.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/maze.cpp.i
+.PHONY : maze.cpp.i
+
+maze.s: maze.cpp.s
+.PHONY : maze.s
+
+# target to generate assembly for a file
+maze.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/maze.cpp.s
+.PHONY : maze.cpp.s
+
+objects.o: objects.cpp.o
+.PHONY : objects.o
+
+# target to build an object file
+objects.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/objects.cpp.o
+.PHONY : objects.cpp.o
+
+objects.i: objects.cpp.i
+.PHONY : objects.i
+
+# target to preprocess a source file
+objects.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/objects.cpp.i
+.PHONY : objects.cpp.i
+
+objects.s: objects.cpp.s
+.PHONY : objects.s
+
+# target to generate assembly for a file
+objects.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/objects.cpp.s
+.PHONY : objects.cpp.s
+
+save.o: save.cpp.o
+.PHONY : save.o
+
+# target to build an object file
+save.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/save.cpp.o
+.PHONY : save.cpp.o
+
+save.i: save.cpp.i
+.PHONY : save.i
+
+# target to preprocess a source file
+save.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/save.cpp.i
+.PHONY : save.cpp.i
+
+save.s: save.cpp.s
+.PHONY : save.s
+
+# target to generate assembly for a file
+save.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/save.cpp.s
+.PHONY : save.cpp.s
 
 source.o: source.cpp.o
 .PHONY : source.o
@@ -177,6 +273,30 @@ source.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/source.cpp.s
 .PHONY : source.cpp.s
 
+table_records.o: table_records.cpp.o
+.PHONY : table_records.o
+
+# target to build an object file
+table_records.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/table_records.cpp.o
+.PHONY : table_records.cpp.o
+
+table_records.i: table_records.cpp.i
+.PHONY : table_records.i
+
+# target to preprocess a source file
+table_records.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/table_records.cpp.i
+.PHONY : table_records.cpp.i
+
+table_records.s: table_records.cpp.s
+.PHONY : table_records.s
+
+# target to generate assembly for a file
+table_records.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/table_records.cpp.s
+.PHONY : table_records.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +306,27 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... horror"
+	@echo "... display.o"
+	@echo "... display.i"
+	@echo "... display.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... maze.o"
+	@echo "... maze.i"
+	@echo "... maze.s"
+	@echo "... objects.o"
+	@echo "... objects.i"
+	@echo "... objects.s"
+	@echo "... save.o"
+	@echo "... save.i"
+	@echo "... save.s"
 	@echo "... source.o"
 	@echo "... source.i"
 	@echo "... source.s"
+	@echo "... table_records.o"
+	@echo "... table_records.i"
+	@echo "... table_records.s"
 .PHONY : help
 
 

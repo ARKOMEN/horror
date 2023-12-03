@@ -40,7 +40,7 @@ int main() {
     int w = w1/2;
 
     bool choice = true;
-    bool developer_mode = false;
+    bool developerMode = false;
 
     sound.play();
     sound.setLoop(true);
@@ -66,20 +66,20 @@ int main() {
             case 10: // клавиша ENTER
                 if(highlight == 1) {
                     sound.stop();
-                    game(highlight, developer_mode);
+                    game(highlight, developerMode);
                     sound.play();
                 }
                 else if(highlight == 2){
                     sound.stop();
-                    game(highlight, developer_mode);
+                    game(highlight, developerMode);
                     sound.play();
                 }
                 else if(highlight == 3){//настройки
-                    display_settings(h, w, &sound, &developer_mode);
+                    displaySettings(h, w, &sound, &developerMode);
 
                 }
                 else if(highlight == 4){
-                    table_records(h, w);
+                    tableRecords(h, w);
                 }
                 else if(highlight == 5){
                     choice = false;

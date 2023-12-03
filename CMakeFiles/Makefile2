@@ -81,12 +81,12 @@ clean: CMakeFiles/horror.dir/clean
 CMakeFiles/horror.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/horror.dir/build.make CMakeFiles/horror.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles --progress-num=1,2,3 "Built target horror"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target horror"
 .PHONY : CMakeFiles/horror.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/horror.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles 8
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/horror.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles 0
 .PHONY : CMakeFiles/horror.dir/rule

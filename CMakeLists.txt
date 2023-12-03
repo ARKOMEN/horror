@@ -19,6 +19,11 @@ endif()
 add_executable(${exe_name} main.cpp
         header.h
         source.cpp
+        table_records.cpp
+        objects.cpp
+        maze.cpp
+        save.cpp
+        display.cpp
 )
 
 if(WIN32 OR MSVC)

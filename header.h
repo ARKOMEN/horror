@@ -13,7 +13,7 @@
 #include <sstream>
 #include <chrono>
 
-void table_records(int h , int w);
+void tableRecords(int h , int w);
 
 class MazeGenerator{
     void generateMazeRecursive(int x, int y);
@@ -26,7 +26,7 @@ public:
     ~MazeGenerator();
 };
 
-class game_object{
+class GameObject{
 public:
     int x, y;
     MazeGenerator* _map;
@@ -34,37 +34,53 @@ public:
     virtual void move(int c) = 0;
 };
 
-class draw {
+class Draw {
     int _h, _w;
-    bool _developer_mode;
+    bool _developerMode;
     MazeGenerator* _map;
 public:
     int x, y;
-    draw(int h, int w, MazeGenerator* map, bool developer_mode);
-    void display(game_object*& object);
-    void display_map();
-    int display_pause(int h1, int w1);
+    Draw(int h, int w, MazeGenerator* map, bool developerMode);
+    void display(GameObject*& object);
+    void displayMap();
+    int displayPause(int h1, int w1);
 };
 
-class character : public game_object{
+class Character : public GameObject{
 public:
-    character(int nx, int ny, MazeGenerator* map);
+    Character(int nx, int ny, MazeGenerator* map);
     void move(int c) override;
 };
 
-class ghosts : public game_object{
+class Ghosts : public GameObject{
 public:
     int direction;
-    ghosts(int nx, int ny, MazeGenerator* nmap);
+    Ghosts(int nx, int ny, MazeGenerator* nmap);
     void move(int c) override;
 };
 
-class artifacts : public game_object{
+class Artifacts : public GameObject{
 public:
-    artifacts(int nx, int ny, MazeGenerator* nmap);
+    Artifacts(int nx, int ny, MazeGenerator* nmap);
     void move(int c) override;
 };
 
-bool display_settings(int h1, int w1, sf::Sound* sound, bool* developer_mode);
+struct Player {
+    std::string name;
+    int artifactsCollected;
+    double timeTaken;
+};
 
-void game(int ch, bool developer_mode);
+bool displaySettings(int h1, int w1, sf::Sound* sound, bool* developerMode);
+
+void game(int ch, bool developerMode);
+
+void saveGame(MazeGenerator* map ,std::vector<GameObject*> objects, int numberArtifacts, double time);
+
+void tableRecords(int h, int w);
+
+void displayResult(int artifactsCollected, double timeTaken);
+
+void displayTable(const std::vector<Player>& players);
+
+bool comparePlayers(const Player& player1, const Player& player2);

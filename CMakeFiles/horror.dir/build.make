@@ -97,16 +97,96 @@ CMakeFiles/horror.dir/source.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/horror.dir/source.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/artemiy/CLionProjects/horror/Pac-Man/source.cpp -o CMakeFiles/horror.dir/source.cpp.s
 
+CMakeFiles/horror.dir/table_records.cpp.o: CMakeFiles/horror.dir/flags.make
+CMakeFiles/horror.dir/table_records.cpp.o: table_records.cpp
+CMakeFiles/horror.dir/table_records.cpp.o: CMakeFiles/horror.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/horror.dir/table_records.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/horror.dir/table_records.cpp.o -MF CMakeFiles/horror.dir/table_records.cpp.o.d -o CMakeFiles/horror.dir/table_records.cpp.o -c /home/artemiy/CLionProjects/horror/Pac-Man/table_records.cpp
+
+CMakeFiles/horror.dir/table_records.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/horror.dir/table_records.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/artemiy/CLionProjects/horror/Pac-Man/table_records.cpp > CMakeFiles/horror.dir/table_records.cpp.i
+
+CMakeFiles/horror.dir/table_records.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/horror.dir/table_records.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/artemiy/CLionProjects/horror/Pac-Man/table_records.cpp -o CMakeFiles/horror.dir/table_records.cpp.s
+
+CMakeFiles/horror.dir/objects.cpp.o: CMakeFiles/horror.dir/flags.make
+CMakeFiles/horror.dir/objects.cpp.o: objects.cpp
+CMakeFiles/horror.dir/objects.cpp.o: CMakeFiles/horror.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/horror.dir/objects.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/horror.dir/objects.cpp.o -MF CMakeFiles/horror.dir/objects.cpp.o.d -o CMakeFiles/horror.dir/objects.cpp.o -c /home/artemiy/CLionProjects/horror/Pac-Man/objects.cpp
+
+CMakeFiles/horror.dir/objects.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/horror.dir/objects.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/artemiy/CLionProjects/horror/Pac-Man/objects.cpp > CMakeFiles/horror.dir/objects.cpp.i
+
+CMakeFiles/horror.dir/objects.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/horror.dir/objects.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/artemiy/CLionProjects/horror/Pac-Man/objects.cpp -o CMakeFiles/horror.dir/objects.cpp.s
+
+CMakeFiles/horror.dir/maze.cpp.o: CMakeFiles/horror.dir/flags.make
+CMakeFiles/horror.dir/maze.cpp.o: maze.cpp
+CMakeFiles/horror.dir/maze.cpp.o: CMakeFiles/horror.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/horror.dir/maze.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/horror.dir/maze.cpp.o -MF CMakeFiles/horror.dir/maze.cpp.o.d -o CMakeFiles/horror.dir/maze.cpp.o -c /home/artemiy/CLionProjects/horror/Pac-Man/maze.cpp
+
+CMakeFiles/horror.dir/maze.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/horror.dir/maze.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/artemiy/CLionProjects/horror/Pac-Man/maze.cpp > CMakeFiles/horror.dir/maze.cpp.i
+
+CMakeFiles/horror.dir/maze.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/horror.dir/maze.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/artemiy/CLionProjects/horror/Pac-Man/maze.cpp -o CMakeFiles/horror.dir/maze.cpp.s
+
+CMakeFiles/horror.dir/save.cpp.o: CMakeFiles/horror.dir/flags.make
+CMakeFiles/horror.dir/save.cpp.o: save.cpp
+CMakeFiles/horror.dir/save.cpp.o: CMakeFiles/horror.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/horror.dir/save.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/horror.dir/save.cpp.o -MF CMakeFiles/horror.dir/save.cpp.o.d -o CMakeFiles/horror.dir/save.cpp.o -c /home/artemiy/CLionProjects/horror/Pac-Man/save.cpp
+
+CMakeFiles/horror.dir/save.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/horror.dir/save.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/artemiy/CLionProjects/horror/Pac-Man/save.cpp > CMakeFiles/horror.dir/save.cpp.i
+
+CMakeFiles/horror.dir/save.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/horror.dir/save.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/artemiy/CLionProjects/horror/Pac-Man/save.cpp -o CMakeFiles/horror.dir/save.cpp.s
+
+CMakeFiles/horror.dir/display.cpp.o: CMakeFiles/horror.dir/flags.make
+CMakeFiles/horror.dir/display.cpp.o: display.cpp
+CMakeFiles/horror.dir/display.cpp.o: CMakeFiles/horror.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/horror.dir/display.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/horror.dir/display.cpp.o -MF CMakeFiles/horror.dir/display.cpp.o.d -o CMakeFiles/horror.dir/display.cpp.o -c /home/artemiy/CLionProjects/horror/Pac-Man/display.cpp
+
+CMakeFiles/horror.dir/display.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/horror.dir/display.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/artemiy/CLionProjects/horror/Pac-Man/display.cpp > CMakeFiles/horror.dir/display.cpp.i
+
+CMakeFiles/horror.dir/display.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/horror.dir/display.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/artemiy/CLionProjects/horror/Pac-Man/display.cpp -o CMakeFiles/horror.dir/display.cpp.s
+
 # Object files for target horror
 horror_OBJECTS = \
 "CMakeFiles/horror.dir/main.cpp.o" \
-"CMakeFiles/horror.dir/source.cpp.o"
+"CMakeFiles/horror.dir/source.cpp.o" \
+"CMakeFiles/horror.dir/table_records.cpp.o" \
+"CMakeFiles/horror.dir/objects.cpp.o" \
+"CMakeFiles/horror.dir/maze.cpp.o" \
+"CMakeFiles/horror.dir/save.cpp.o" \
+"CMakeFiles/horror.dir/display.cpp.o"
 
 # External object files for target horror
 horror_EXTERNAL_OBJECTS =
 
 horror: CMakeFiles/horror.dir/main.cpp.o
 horror: CMakeFiles/horror.dir/source.cpp.o
+horror: CMakeFiles/horror.dir/table_records.cpp.o
+horror: CMakeFiles/horror.dir/objects.cpp.o
+horror: CMakeFiles/horror.dir/maze.cpp.o
+horror: CMakeFiles/horror.dir/save.cpp.o
+horror: CMakeFiles/horror.dir/display.cpp.o
 horror: CMakeFiles/horror.dir/build.make
 horror: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1
 horror: /usr/lib/x86_64-linux-gnu/libsfml-network.so.2.5.1
@@ -114,7 +194,7 @@ horror: /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.5.1
 horror: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1
 horror: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
 horror: CMakeFiles/horror.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable horror"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/artemiy/CLionProjects/horror/Pac-Man/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable horror"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/horror.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
